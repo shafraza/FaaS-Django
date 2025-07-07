@@ -1,0 +1,802 @@
+openapi: 3.0.3
+info:
+  title: Pics API Project
+  version: 1.0.0
+  description: A sample photos API
+paths:
+  /account/login/:
+    post:
+      operationId: account_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /account/logout/:
+    post:
+      operationId: account_logout_create
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Logout'
+          description: ''
+  /account/password-reset/:
+    post:
+      operationId: account_password_reset_create
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetRequest'
+          description: ''
+  /account/password-reset-confirm/{uidb64}/{token}/:
+    get:
+      operationId: account_password_reset_confirm_retrieve
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - account
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /account/profile-update/:
+    put:
+      operationId: account_profile_update_update
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /account/profiles/:
+    get:
+      operationId: account_profiles_retrieve
+      tags:
+      - account
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /account/refresh/:
+    post:
+      operationId: account_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /account/register/:
+    post:
+      operationId: account_register_create
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUser'
+          description: ''
+  /account/resend-otp/:
+    post:
+      operationId: account_resend_otp_create
+      tags:
+      - account
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /account/set-new-password/:
+    patch:
+      operationId: account_set_new_password_partial_update
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSetNewPassword'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetNewPassword'
+          description: ''
+  /account/verify/:
+    post:
+      operationId: account_verify_create
+      tags:
+      - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OTP'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OTP'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OTP'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OTP'
+          description: ''
+  /app/categories/:
+    get:
+      operationId: app_categories_retrieve
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: app_categories_create
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /app/categories/{uuid}/:
+    get:
+      operationId: app_categories_retrieve_2
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: app_categories_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    patch:
+      operationId: app_categories_partial_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: app_categories_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /app/pics/:
+    get:
+      operationId: app_pics_retrieve
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pic'
+          description: ''
+    post:
+      operationId: app_pics_create
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pic'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pic'
+          description: ''
+  /app/pics/{uuid}/:
+    get:
+      operationId: app_pics_retrieve_2
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pic'
+          description: ''
+    put:
+      operationId: app_pics_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pic'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pic'
+          description: ''
+    patch:
+      operationId: app_pics_partial_update
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPic'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPic'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pic'
+          description: ''
+    delete:
+      operationId: app_pics_destroy
+      parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - app
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+      required:
+      - name
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    Logout:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required:
+      - refresh_token
+    OTP:
+      type: object
+      properties:
+        otp:
+          type: string
+          maxLength: 6
+          minLength: 6
+      required:
+      - otp
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PatchedCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+    PatchedPic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        image:
+          type: string
+          format: uri
+        size:
+          $ref: '#/components/schemas/SizeEnum'
+        description:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedSetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        uidb64:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          writeOnly: true
+    Pic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        image:
+          type: string
+          format: uri
+        size:
+          $ref: '#/components/schemas/SizeEnum'
+        description:
+          type: string
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created
+      - name
+      - owner
+      - updated
+    RegisterUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - id
+      - password
+      - password2
+      - username
+    SetNewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        confirm_password:
+          type: string
+          writeOnly: true
+          maxLength: 100
+          minLength: 6
+        uidb64:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - confirm_password
+      - password
+      - token
+      - uidb64
+    SizeEnum:
+      enum:
+      - SM
+      - M
+      - L
+      - XL
+      type: string
+      description: |-
+        * `SM` - Small
+        * `M` - Medium
+        * `L` - Large
+        * `XL` - Extra Large
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/RegisterUser'
+          readOnly: true
+        image:
+          type: string
+          format: uri
+        bio:
+          type: string
+          maxLength: 500
+      required:
+      - bio
+      - id
+      - user
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
